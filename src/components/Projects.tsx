@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { MonitorIcon, ServerIcon, ActivityIcon, GaugeIcon, DatabaseIcon, GlobeIcon, GitBranchIcon, ZoomInIcon, XIcon } from "lucide-react";
+import { url } from "inspector";
 const ProjectCard = ({
   title,
   description,
   icon: Icon,
   image,
-  isDetailed
+  isDetailed,
+  url
 }) => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   return <div className={`bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 ${isDetailed ? "col-span-full" : ""}`}>
@@ -18,7 +20,13 @@ const ProjectCard = ({
       </div>
       <p className="text-gray-600 mb-4">{description}</p>
       {image && <div className="relative">
-        <div className="relative cursor-pointer group" onClick={() => setIsImageModalOpen(true)}>
+        <div className="relative cursor-pointer group" onClick={() => {
+          if (url) {
+            window.open(url, "_blank");
+          } else {
+            setIsImageModalOpen(true);
+          }
+        }}>
           <img src={image} alt={title} className="w-full rounded-lg border border-gray-200" />
           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 flex items-center justify-center">
             <ZoomInIcon className="text-transparent group-hover:text-white h-8 w-8" />
@@ -48,28 +56,38 @@ const Projects = () => {
       • Multi-environment support (DEV, UAT, PROD)`,
     icon: GitBranchIcon,
     image: "/Screenshot_2025-03-07_at_14.17.04.png",
-    isDetailed: true
+    isDetailed: true,
+    url: "https://app.eraser.io/workspace/2zoMd5OvLzCLkxq0Myf6?origin=share"
   }, {
     title: "Kolao ITHQ Service Monitoring",
     description: "A comprehensive monitoring solution for tracking service health and performance across the organization.",
     image: "/uptime.png",
     icon: GaugeIcon
   }, {
+    title: "SabaiFin - Loan Calculator Web",
+    description: "A loan calculator website providing users with the ability to calculate their loan repayment amounts and visualize their loan repayment schedule. ",
+    image: "/sabaifin.png",
+    icon: DatabaseIcon,
+    url: "https://fin.sabaiops.site"
+  },
+  {
     title: "Kokkok Ltry",
     description: "An innovative lottery application for Kokkok Ltry, providing users with the ability to participate in draws, view results, and manage their lottery tickets.",
     image: "/KKL.png",
     icon: DatabaseIcon
-  }, {
+  },
+  {
     title: "Kokkok Membership",
     description: "A loyalty program application for Kokkok Mart, allowing customers to earn and redeem points, receive exclusive offers, and track their membership status.",
     image: "/KKM.png",
     icon: DatabaseIcon
-  }, {
+  },
+  {
     title: "Pipeline Management with Jenkins",
     description: "A comprehensive pipeline management system utilizing Jenkins for automated build, test, and deployment processes.",
     image: "/Jenkins.png",
     icon: MonitorIcon
-  },{
+  }, {
     title: "Grafana Dashboard for Server Performance",
     description: "A comprehensive dashboard for monitoring server performance, utilizing Grafana for data visualization and alerting.",
     image: "/Grafana.png",
@@ -98,7 +116,7 @@ const Projects = () => {
   return <section id="projects" className="py-8">
     <h2 className="text-2xl font-bold text-gray-900 mb-4">Projects</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {projects.map((project, index) => <ProjectCard key={index} title={project.title} description={project.description} icon={project.icon} image={project.image} isDetailed={project.isDetailed} />)}
+      {projects.map((project, index) => <ProjectCard key={index} title={project.title} description={project.description} icon={project.icon} image={project.image} isDetailed={project.isDetailed} url={project.url} />)}
     </div>
   </section>;
 };
